@@ -1,0 +1,9 @@
+[package]
+name = "topcoat-taskboard"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+toasty = { version = "0.11.0", features = ["sqlite"] }
+tokio = { version = "1.53.3", features = ["rt-multi-thread", "macros"] }
+topcoat = "0.10.0"
