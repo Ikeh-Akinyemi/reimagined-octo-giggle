@@ -25,6 +25,12 @@ pub async fn page(cx: &Cx) -> Result<impl View> {
     let blocked_share =
         review.iter().filter(|task| task.blocked).count() as f64 / review.len() as f64;
     let show_share = signal(cx, || true);
+    // The fix: decide the empty case on the server so only a finite value is captured.
+    let guarded_share = if review.is_empty() {
+        0.0
+    } else {
+        blocked_share
+    };
 
     Ok(view! {
         <h1>"Where the boundary leaks"</h1>
@@ -66,6 +72,10 @@ pub async fn page(cx: &Cx) -> Result<impl View> {
         " blocked share in Review: "
         <output id="share">
             $(if show_share.get() { blocked_share } else { -1.0 })
+        </output>
+        " guarded: "
+        <output id="guarded-share">
+            $(if show_share.get() { guarded_share } else { -1.0 })
         </output>
     })
 }
